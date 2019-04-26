@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="styles.css">
+    <title>Workout-trainer</title>
+</head>
+<body>
+
+    <div id="main-container" class="main">
+            <h1 class="form-heading">WORK</h1>
+            <div class="input-container">
+                <input type="number" name="number" id="minute-input" placeholder="Enter Minutes" size="3">
+                <input type="number" name="number" id="second-input" placeholder="Enter Seconds">
+            </div>
+        
+        <h1 class="form-heading">REST</h1>
+        <div class="input-container">
+                <input type="number" name="number" id="rminute-input" placeholder="Enter Minutes" size="3">
+                <input type="number" name="number" id="rsecond-input" placeholder="Enter Seconds">
+        </div>
+        <h1 class="form-heading">INITIAL WAIT</h1>
+        <div class="input-container">
+                <input type="number" name="number" id="wait-input" placeholder="Enter Seconds" size="3">
+        </div>
+        <h1 class="form-heading">ROUNDS</h1>
+        <div class="input-container">
+                <input type="number" name="number" id="round-input" placeholder="Enter Number" size="3">
+        </div>
+        <button type="button" class="buttons" onclick="setTimer()"><p class="button-text">Set Timer</p></button>
+
+        
+
+        
+    </div>
+    <script src="scripts.js"></script>
+</body>
+</html>
