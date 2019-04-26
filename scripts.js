@@ -25,7 +25,7 @@ function setTimer(){
     totalRounds =  document.getElementById("round-input").value;
     restSeconds =  document.getElementById("rsecond-input").value;
     restMinutes =  document.getElementById("rminute-input").value;
-    initialwait =  document.getElementById("wait-input").value;
+    initialWait =  document.getElementById("wait-input").value;
     clearThings();
     settingThings();
         
@@ -127,15 +127,15 @@ function setTimer(){
 function startTimer(){
     
     if(!isPaused){
-        if(count == 0){
+        if(count === 0){
             timerVariables = {
-                x : initialwait,
+                x : initialWait,
                 y : 0
             }
         }  
          
         
-        if(count > 0  && count % 2 == 0){
+        else if(count > 0  && count % 2 !== 0){
             timerVariables = {
                 x : workSeconds,
                 y : workMinutes
@@ -159,9 +159,6 @@ function startTimer(){
         isPaused = false;
     }
 
-    
-
-    
     
     intervalCycle = setInterval(timerFunction.bind(timerVariables) ,1000);
     
@@ -207,7 +204,7 @@ function timerFunction(){
                 startTimer();
             }
 
-            if(count % 2 == 0){
+            if(count > 1 && count % 2 !== 0){
                 roundsCount++;
                 document.getElementById("rounds-container").innerHTML = roundsCount + " / " + totalRounds;
             }
@@ -247,7 +244,6 @@ function stopTimer(){
 
 
 
-
 function settingThings(){
     
     //----------------------------CREATING ELEMENTS FOR THE TIMER:----------------------------//
@@ -281,7 +277,13 @@ function settingThings(){
     let minuteNode = document.createElement("SPAN");
     minuteNode.className = "timer";
     minuteNode.id = "minutes";
-    let minuteChildNode = workMinutes < 10 ? document.createTextNode("0" + workMinutes) : document.createTextNode(workMinutes);
+    let minuteChildNode;
+    if(initialWait && initialWait > 0){
+        minuteChildNode = document.createTextNode("00");
+    }
+    else{
+        minuteChildNode = workMinutes < 10 ? document.createTextNode("0" + workMinutes) : document.createTextNode(workMinutes);
+    }
     minuteNode.appendChild(minuteChildNode);
     
 
@@ -294,7 +296,14 @@ function settingThings(){
     let secondNode = document.createElement("SPAN");
     secondNode.className = "timer";
     secondNode.id = "seconds";
-    let secondChildNode = workSeconds < 10 ? document.createTextNode("0" + workSeconds) : document.createTextNode(workSeconds);
+    let secondChildNode;
+    if(initialWait && initialWait > 0){
+         secondChildNode = initialWait < 10 ? document.createTextNode("0" + initialWait) : document.createTextNode(initialWait);
+    }
+    else{
+         secondChildNode = workSeconds < 10 ? document.createTextNode("0" + workSeconds) : document.createTextNode(workSeconds);
+    }
+    
     secondNode.appendChild(secondChildNode);
 
     //---------------------------------BUTTON ELEMENTS BELOW:------------------------------//
@@ -350,6 +359,110 @@ function clearThings(){
     // document.body.removeChild(formContainer);
     formContainer.style.display = "none";
 }
+
+
+// function settingThings(){
+    
+//     //----------------------------CREATING ELEMENTS FOR THE TIMER:----------------------------//
+    
+
+//     //----------------------------PARENT ELEMENT OF TIMER:------------------------------------//
+
+//     let parent = document.createElement("DIV");
+//     parent.className = "timer-container";
+//     parent.id = "timer-id";
+//     document.body.appendChild(parent);
+
+
+//     //----------------------------PARENT ELEMENT OF BUTTONS:-----------------------------------//
+
+//     let buttonParent = document.createElement("DIV");
+//     buttonParent.className = "buttons-container";
+//     parent.appendChild(buttonParent);
+
+
+//     //----------------------------CHILD ELEMENTS OF TIMER BELOW-------------------------------//
+
+//     let roundsNode = document.createElement("DIV");
+//     roundsNode.id = "rounds-container";
+//     let roundsChildNode = document.createTextNode(roundsCount + "/" + totalRounds);
+//     roundsNode.appendChild(roundsChildNode);
+    
+
+
+
+//     let minuteNode = document.createElement("SPAN");
+//     minuteNode.className = "timer";
+//     minuteNode.id = "minutes";
+//     let minuteChildNode = workMinutes < 10 ? document.createTextNode("0" + workMinutes) : document.createTextNode(workMinutes);
+//     minuteNode.appendChild(minuteChildNode);
+    
+
+//     let colon = document.createElement("SPAN");
+//     colon.className = "colon";
+//     let colonText = document.createTextNode(":");
+//     colon.appendChild(colonText);
+
+       
+//     let secondNode = document.createElement("SPAN");
+//     secondNode.className = "timer";
+//     secondNode.id = "seconds";
+//     let secondChildNode = workSeconds < 10 ? document.createTextNode("0" + workSeconds) : document.createTextNode(workSeconds);
+//     secondNode.appendChild(secondChildNode);
+
+//     //---------------------------------BUTTON ELEMENTS BELOW:------------------------------//
+
+
+//     //----------------------------BACK BUTTON----------------------------------------------//
+//     var backButton = document.createElement("DIV");
+//     backButton.id = "back";
+//     document.body.appendChild(backButton);
+
+
+//     //-------------------------------PLAY BUTTON------------------------------------------//
+
+//     var playButton = document.createElement("DIV");
+//     playButton.id = "play";
+    
+//     //-------------------------------PAUSE BUTTON-----------------------------------------//
+
+//     var pauseButton = document.createElement("DIV");
+//     pauseButton.id = "pause";
+
+//     //-------------------------------STOP BUTTON-----------------------------------------//
+
+//     var stopButton = document.createElement("DIV");
+//     stopButton.id = "stop";
+
+
+
+//     //----------------------------- EVENTS OF BUTTONS------------------------------------//
+
+//     playButton.addEventListener("click", startTimer);
+//     pauseButton.addEventListener("click", pauseTimer);
+//     stopButton.addEventListener("click", stopTimer);
+//     backButton.addEventListener("click", goBackAlert);
+
+//     // -------------------------- ENDING OF CHILD ELEMENTS-------------------------//
+    
+    
+//     //-------------------APPENDING CHILD ELEMENTS TO PARENT ELEMENTS:--------------------//
+//     parent.insertBefore(roundsNode, buttonParent);
+//     parent.insertBefore(minuteNode, buttonParent);
+//     parent.insertBefore(colon, buttonParent);
+//     parent.insertBefore(secondNode, buttonParent);
+
+//     buttonParent.appendChild(playButton);
+//     buttonParent.appendChild(pauseButton);
+//     buttonParent.appendChild(stopButton);
+
+// }
+
+// function clearThings(){
+//      let formContainer = document.getElementById("main-container");
+//     // document.body.removeChild(formContainer);
+//     formContainer.style.display = "none";
+// }
 
 
 function goBackAlert(){
