@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -10,27 +10,30 @@
 <body>
 
     <div id="main-container" class="main">
+        <form>
             <h1 class="form-heading">WORK</h1>
+                <div class="input-container">
+                    <input type="number" name="number" id="minute-input" placeholder="Enter Minutes" size="3" required>
+                    <input type="number" name="number" id="second-input" placeholder="Enter Seconds" required>
+                </div>
+            
+            <h1 class="form-heading">REST</h1>
             <div class="input-container">
-                <input type="number" name="number" id="minute-input" placeholder="Enter Minutes" size="3">
-                <input type="number" name="number" id="second-input" placeholder="Enter Seconds">
+                    <input type="number" name="number" id="rminute-input" placeholder="Enter Minutes" size="3">
+                    <input type="number" name="number" id="rsecond-input" placeholder="Enter Seconds" required>
             </div>
-        
-        <h1 class="form-heading">REST</h1>
-        <div class="input-container">
-                <input type="number" name="number" id="rminute-input" placeholder="Enter Minutes" size="3">
-                <input type="number" name="number" id="rsecond-input" placeholder="Enter Seconds">
-        </div>
         <h1 class="form-heading">INITIAL WAIT</h1>
-        <div class="input-container">
-                <input type="number" name="number" id="wait-input" placeholder="Enter Seconds" size="3">
-        </div>
-        <h1 class="form-heading">ROUNDS</h1>
-        <div class="input-container">
-                <input type="number" name="number" id="round-input" placeholder="Enter Number" size="3">
-        </div>
-        <button type="button" class="buttons" onclick="setTimer()"><p class="button-text">Set Timer</p></button>
-
+            <div class="input-container">
+                    <input type="number" name="number" id="wait-input" placeholder="Enter Seconds" size="3">
+            </div>
+            <h1 class="form-heading">ROUNDS</h1>
+            <div class="input-container">
+                    <input type="number" name="number" id="round-input" placeholder="Enter Number" size="3">
+            </div>
+            <button type="button" class="buttons" onclick="setTimer()"><p class="button-text">Set Timer</p></button>
+            <!-- <input type="submit" class="buttons" value="Set Timer"> -->
+        </form>
+            
         
 
         

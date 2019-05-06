@@ -3,13 +3,14 @@
         workMinutes,
         restSeconds,
         restMinutes,
-        initialwait, 
+        initialWait, 
         count = 0,
         roundsCount = 1,
         timerVariables,
         pseudoTimerVariables,
         isPaused = false,
         goBackFlag = false,
+        stopFlag = false,
         totalRounds,
         intervalCycle,
         tickSound,
@@ -41,28 +42,54 @@ function setTimer(){
 function startTimer(){
     
     if(!isPaused){
-        if(count === 0){
-            timerVariables = {
-                x : initialWait,
-                y : 0
+        if(initialWait && initialWait > 0){
+            if(count === 0){
+                timerVariables = {
+                    x : initialWait,
+                    y : 0
+                }
+                document.getElementById("heading-container").innerHTML = "INITIAL WAIT";
+            }  
+             
+            
+            else if(count > 0  && count % 2 !== 0){
+                timerVariables = {
+                    x : workSeconds,
+                    y : workMinutes
+                }
+                document.getElementById("heading-container").innerHTML = "WORKOUT";
+
             }
-        }  
-         
-        
-        else if(count > 0  && count % 2 !== 0){
-            timerVariables = {
-                x : workSeconds,
-                y : workMinutes
+    
+            else{
+                timerVariables = {
+                    x : restSeconds,
+                    y : restMinutes
+                }
+                document.getElementById("heading-container").innerHTML = "REST";
+
             }
-              
         }
 
         else{
-            timerVariables = {
-                x : restSeconds,
-                y : restMinutes
+            if(count === 0 || count % 2 == 0){
+                timerVariables = {
+                    x : workSeconds,
+                    y : workMinutes
+                }
+                document.getElementById("heading-container").innerHTML = "WORKOUT";
+
             }
-        }
+            else{
+                timerVariables = {
+                    x : restSeconds,
+                    y : restMinutes
+                }
+                document.getElementById("heading-container").innerHTML = "REST";
+
+            }
+        }    
+
     }
 
     else{
@@ -100,38 +127,49 @@ function timerFunction(){
             document.getElementById("minutes").innerHTML = this.y < 10 ? "0" + this.y : this.y;
         }
         if(this.x == 0 && this.y == 0){
-
-            if(roundsCount == totalRounds){
-                document.getElementById("seconds").innerHTML = "00";
-                document.getElementById("minutes").innerHTML = "00";
-                clearInterval(intervalCycle);
-                tickSound.stop();
-                finishSound.play();
-                return;
+            if(totalRounds && totalRounds > 0){
+                if(roundsCount == totalRounds){
+                    document.getElementById("seconds").innerHTML = "00";
+                    document.getElementById("minutes").innerHTML = "00";
+                    clearInterval(intervalCycle);
+                    tickSound.stop();
+                    finishSound.play();
+                    return;
+                    
+                }
+                else{
+                    clearInterval(intervalCycle);
+                    tickSound.stop();
+                    finishSound.play();
+                    count++;
+                    startTimer();
+                }
                 
+                    if(initialWait &&  initialWait > 0){
+                        if(count > 1 && count % 2 !== 0){
+                            roundsCount++;
+                            document.getElementById("rounds-container").innerHTML = roundsCount + " / " + totalRounds;
+                                
+                        }
+                    }
+                    else{
+                        if(count > 0 && count % 2 == 0){
+                            roundsCount++;
+                            document.getElementById("rounds-container").innerHTML = roundsCount + " / " + totalRounds;
+                        }
+                    }
             }
-            else{
+            else {
                 clearInterval(intervalCycle);
-                tickSound.stop();
-                finishSound.play();
-                count++;
+                count++; 
                 startTimer();
             }
 
-            if(count > 1 && count % 2 !== 0){
-                roundsCount++;
-                document.getElementById("rounds-container").innerHTML = roundsCount + " / " + totalRounds;
-            }
             
         }
 
 
     }
-
-
-
-
-
 
 
 function pauseTimer(){
@@ -145,11 +183,55 @@ function pauseTimer(){
     
 }
 
+function stopAlert(){
+    let stopAlertBox = document.createElement("DIV");
+    stopAlertBox.id = "stop-alert";
+    let stopAlertMessage = document.createElement("DIV");
+    stopAlertMessage.id = "stopAlert-message-container";
+    let stopAlertTextNode = document.createTextNode("Timer will be reset.");
+    stopAlertMessage.appendChild(stopAlertTextNode);
+    let linebreak = document.createElement("br");
+    stopAlertMessage.appendChild(linebreak);
+    let stopAlertTextNode2 = document.createTextNode("Are you sure you want to stop?");
+    stopAlertMessage.appendChild(stopAlertTextNode2);
+
+    let yesButton = document.createElement("button");
+    yesButton.className = "alert-buttons";
+    let buttonText = document.createTextNode("YES");
+    yesButton.appendChild(buttonText);
+    let noButton = document.createElement("BUTTON");
+    let buttonText2 = document.createTextNode("NO");
+    noButton.appendChild(buttonText2);
+    noButton.className = "alert-buttons";
+
+    
+    document.body.appendChild(stopAlertBox);
+    stopAlertBox.appendChild(stopAlertMessage);
+    stopAlertBox.appendChild(yesButton);
+    stopAlertBox.appendChild(noButton);
+    
+
+    yesButton.addEventListener("click", function(){stopFlag = true; stopTimer()});
+    noButton.addEventListener("click", function(){stopTimer()});
+
+
+}
+
+
 function stopTimer(){
-    tickSound.stop();
-    clearInterval(intervalCycle);
-    document.getElementById("seconds").innerHTML = "00";
-    document.getElementById("minutes").innerHTML = "00";
+    let removeStopAlert =  document.getElementById("stop-alert");
+    document.body.removeChild(removeStopAlert);
+ 
+    if(stopFlag){
+        tickSound.stop();
+        clearInterval(intervalCycle);
+        document.getElementById("seconds").innerHTML = "00";
+        document.getElementById("minutes").innerHTML = "00";
+        stopFlag = false;
+    }
+
+
+
     
 }
 
@@ -179,13 +261,31 @@ function settingThings(){
 
 
     //----------------------------CHILD ELEMENTS OF TIMER BELOW-------------------------------//
-
+    
     let roundsNode = document.createElement("DIV");
     roundsNode.id = "rounds-container";
-    let roundsChildNode = document.createTextNode(roundsCount + "/" + totalRounds);
+    let roundsChildNode;
+    if(totalRounds && totalRounds > 0){
+         roundsChildNode = document.createTextNode(roundsCount + "/" + totalRounds);
+    }
+    else{
+        roundsChildNode = document.createTextNode("INFINITE ROUNDS");
+    }
+    
     roundsNode.appendChild(roundsChildNode);
     
-
+    let headingNode = document.createElement("DIV");
+    headingNode.id = "heading-container";
+    let headingChildNode;
+    if(initialWait && initialWait > 0){
+        headingChildNode = document.createTextNode("INITIAL WAIT");
+    }
+    else{
+        headingChildNode = document.createTextNode("WORKOUT");
+    }
+    headingNode.appendChild(headingChildNode);
+    
+    
 
 
     let minuteNode = document.createElement("SPAN");
@@ -250,7 +350,7 @@ function settingThings(){
 
     playButton.addEventListener("click", startTimer);
     pauseButton.addEventListener("click", pauseTimer);
-    stopButton.addEventListener("click", stopTimer);
+    stopButton.addEventListener("click", stopAlert);
     backButton.addEventListener("click", goBackAlert);
 
     // -------------------------- ENDING OF CHILD ELEMENTS-------------------------//
@@ -258,6 +358,7 @@ function settingThings(){
     
     //-------------------APPENDING CHILD ELEMENTS TO PARENT ELEMENTS:--------------------//
     parent.insertBefore(roundsNode, buttonParent);
+    parent.insertBefore(headingNode, buttonParent);
     parent.insertBefore(minuteNode, buttonParent);
     parent.insertBefore(colon, buttonParent);
     parent.insertBefore(secondNode, buttonParent);
@@ -270,10 +371,9 @@ function settingThings(){
 
 function clearThings(){
      let formContainer = document.getElementById("main-container");
-    // document.body.removeChild(formContainer);
+     //document.body.removeChild(formContainer);
     formContainer.style.display = "none";
 }
-
 
 
 function goBackAlert(){
@@ -322,18 +422,28 @@ function goBack(){
     
     
     if(goBackFlag){
-    
+            clearInterval(intervalCycle);
             let removeButton = document.getElementById("back");
             document.body.removeChild(removeButton);
+            
        
            let formContainer = document.getElementById("main-container");
            formContainer.style.display = "block";
+           // document.body.appendChild(formContainer);
        
             let timerContainer = document.getElementById("timer-id");
             document.body.removeChild(timerContainer);
             roundsCount = 1;
+        
+           goBackFlag = false;
 
-            goBackFlag = false;
+           workSeconds = 0;
+           workMinutes = 0;
+           restMinutes = 0;
+           restSeconds = 0;
+           initialWait = 0;
+           totalRounds = 0;
+           count = 0;
     }
 
 }
