@@ -167,12 +167,12 @@ function timerFunction(){
 
 
 function pauseTimer(){
-isPaused = true;
-pseudoTimerVariables = {
-    x : timerVariables.x,
-    y : timerVariables.y
-};
-clearInterval(intervalCycle);
+    isPaused = true;
+    pseudoTimerVariables = {
+        x : timerVariables.x,
+        y : timerVariables.y
+    };
+    clearInterval(intervalCycle);
 
 }
 
@@ -286,7 +286,7 @@ function settingThings(){
 
     playButton.addEventListener("click", function(){startTimer(); startSound.play()});
     pauseButton.addEventListener("click", pauseTimer);
-    stopButton.addEventListener("click", function(){alertBox(); stopFlag = true;});
+    stopButton.addEventListener("click", function(){stopFlag = true;alertBox(); });
     backButton.addEventListener("click", alertBox);
 
 // -------------------------- ENDING OF CHILD ELEMENTS-------------------------//
@@ -347,8 +347,8 @@ function alertBox(){
     alertBox.appendChild(noButton);
 
     
-    yesButton.addEventListener("click", function(){goBackFlag = true; stopFlag = false; goBack()});
-    noButton.addEventListener("click", function(){goBack()});
+    yesButton.addEventListener("click", function(){goBackFlag = true; stopFlag = false; goBack();});
+    noButton.addEventListener("click", function(){stopFlag = false;goBack();});
 
 }
 
