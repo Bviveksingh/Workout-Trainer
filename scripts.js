@@ -12,11 +12,8 @@
         goBackFlag = false,
         stopFlag = false,
         totalRounds,
-        intervalCycle,
-        tickSound,
-        finishSound;
-         
-        tickSound = new Sound("Resources/Sounds/tick.mp3");
+        intervalCycle;
+        startSound = new Sound("Resources/Sounds/start.mp3");
         finishSound = new Sound("Resources/Sounds/finish.mp3");               
  
 function setTimer(){
@@ -114,14 +111,13 @@ function timerFunction(){
         if(this.x == 0){
             this.x = 59;
             this.y = this.y - 1;
-            tickSound.play();
             document.getElementById("seconds").innerHTML = this.x < 10 ? "0" + this.x : this.x; 
             document.getElementById("minutes").innerHTML = this.y < 10 ? "0" + this.y : this.y;
             
         }
         
         else{
-            tickSound.play();
+            
             this.x = this.x - 1;
             document.getElementById("seconds").innerHTML = this.x < 10 ? "0" + this.x : this.x;
             document.getElementById("minutes").innerHTML = this.y < 10 ? "0" + this.y : this.y;
@@ -132,14 +128,12 @@ function timerFunction(){
                     document.getElementById("seconds").innerHTML = "00";
                     document.getElementById("minutes").innerHTML = "00";
                     clearInterval(intervalCycle);
-                    tickSound.stop();
                     finishSound.play();
                     return;
                     
                 }
                 else{
                     clearInterval(intervalCycle);
-                    tickSound.stop();
                     finishSound.play();
                     count++;
                     startTimer();
@@ -173,7 +167,6 @@ function timerFunction(){
 
 
 function pauseTimer(){
-    tickSound.stop();
     isPaused = true;
     pseudoTimerVariables = {
         x : timerVariables.x,
@@ -348,7 +341,7 @@ function settingThings(){
 
     //----------------------------- EVENTS OF BUTTONS------------------------------------//
 
-    playButton.addEventListener("click", startTimer);
+    playButton.addEventListener("click", function(){startTimer(); startSound.play()});
     pauseButton.addEventListener("click", pauseTimer);
     stopButton.addEventListener("click", stopAlert);
     backButton.addEventListener("click", goBackAlert);
