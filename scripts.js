@@ -216,7 +216,7 @@ function stopTimer(){
     document.body.removeChild(removeStopAlert);
  
     if(stopFlag){
-        tickSound.stop();
+        
         clearInterval(intervalCycle);
         document.getElementById("seconds").innerHTML = "00";
         document.getElementById("minutes").innerHTML = "00";
