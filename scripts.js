@@ -1,21 +1,21 @@
 
     var workSeconds,
-        workMinutes,
-        restSeconds,
-        restMinutes,
-        initialWait, 
-        count = 0,
-        roundsCount = 1,
-        timerVariables,
-        pseudoTimerVariables,
-        isPaused = false,
-        goBackFlag = false,
-        stopFlag = false,
-        totalRounds,
-        intervalCycle;
-        startSound = new Sound("Resources/Sounds/start.mp3");
-        finishSound = new Sound("Resources/Sounds/finish.mp3");               
- 
+    workMinutes,
+    restSeconds,
+    restMinutes,
+    initialWait, 
+    count = 0,
+    roundsCount = 1,
+    timerVariables,
+    pseudoTimerVariables,
+    isPaused = false,
+    goBackFlag = false,
+    stopFlag = false,
+    totalRounds,
+    intervalCycle;
+    startSound = new Sound("Resources/Sounds/start.mp3");
+    finishSound = new Sound("Resources/Sounds/finish.mp3");               
+
 function setTimer(){
 
     workSeconds =  document.getElementById("second-input").value;
@@ -26,7 +26,7 @@ function setTimer(){
     initialWait =  document.getElementById("wait-input").value;
     clearThings();
     settingThings();
-        
+    
 }
 
 
@@ -34,211 +34,154 @@ function setTimer(){
 
 
 
-        
+    
 
 function startTimer(){
-    
-    if(!isPaused){
-        if(initialWait && initialWait > 0){
-            if(count === 0){
-                timerVariables = {
-                    x : initialWait,
-                    y : 0
-                }
-                document.getElementById("heading-container").innerHTML = "INITIAL WAIT";
-            }  
-             
-            
-            else if(count > 0  && count % 2 !== 0){
-                timerVariables = {
-                    x : workSeconds,
-                    y : workMinutes
-                }
-                document.getElementById("heading-container").innerHTML = "WORKOUT";
 
+if(!isPaused){
+    if(initialWait && initialWait > 0){
+        if(count === 0){
+            timerVariables = {
+                x : initialWait,
+                y : 0
             }
-    
-            else{
-                timerVariables = {
-                    x : restSeconds,
-                    y : restMinutes
-                }
-                document.getElementById("heading-container").innerHTML = "REST";
+            document.getElementById("heading-container").innerHTML = "INITIAL WAIT";
+        }  
+         
+        
+        else if(count > 0  && count % 2 !== 0){
+            timerVariables = {
+                x : workSeconds,
+                y : workMinutes
+            }
+            document.getElementById("heading-container").innerHTML = "WORKOUT";
 
-            }
         }
 
         else{
-            if(count === 0 || count % 2 == 0){
-                timerVariables = {
-                    x : workSeconds,
-                    y : workMinutes
-                }
-                document.getElementById("heading-container").innerHTML = "WORKOUT";
-
+            timerVariables = {
+                x : restSeconds,
+                y : restMinutes
             }
-            else{
-                timerVariables = {
-                    x : restSeconds,
-                    y : restMinutes
-                }
-                document.getElementById("heading-container").innerHTML = "REST";
+            document.getElementById("heading-container").innerHTML = "REST";
 
-            }
-        }    
-
+        }
     }
 
     else{
-        timerVariables = {
-            x : pseudoTimerVariables.x,
-            y : pseudoTimerVariables.y
-        }
-        isPaused = false;
-    }
+        if(count === 0 || count % 2 == 0){
+            timerVariables = {
+                x : workSeconds,
+                y : workMinutes
+            }
+            document.getElementById("heading-container").innerHTML = "WORKOUT";
 
-    
-    intervalCycle = setInterval(timerFunction.bind(timerVariables) ,1000);
-    
+        }
+        else{
+            timerVariables = {
+                x : restSeconds,
+                y : restMinutes
+            }
+            document.getElementById("heading-container").innerHTML = "REST";
+
+        }
+    }    
+
+}
+
+else{
+    timerVariables = {
+        x : pseudoTimerVariables.x,
+        y : pseudoTimerVariables.y
+    }
+    isPaused = false;
+}
+
+
+intervalCycle = setInterval(timerFunction.bind(timerVariables) ,1000);
+
 
 }   
 
 
-        
+    
 function timerFunction(){
 
+    
+    if(this.x == 0){
+        this.x = 59;
+        this.y = this.y - 1;
+        document.getElementById("seconds").innerHTML = this.x < 10 ? "0" + this.x : this.x; 
+        document.getElementById("minutes").innerHTML = this.y < 10 ? "0" + this.y : this.y;
         
-        if(this.x == 0){
-            this.x = 59;
-            this.y = this.y - 1;
-            document.getElementById("seconds").innerHTML = this.x < 10 ? "0" + this.x : this.x; 
-            document.getElementById("minutes").innerHTML = this.y < 10 ? "0" + this.y : this.y;
-            
-        }
+    }
+    
+    else{
         
-        else{
-            
-            this.x = this.x - 1;
-            document.getElementById("seconds").innerHTML = this.x < 10 ? "0" + this.x : this.x;
-            document.getElementById("minutes").innerHTML = this.y < 10 ? "0" + this.y : this.y;
-        }
-        if(this.x == 0 && this.y == 0){
-            if(totalRounds && totalRounds > 0){
-                if(roundsCount == totalRounds){
-                    document.getElementById("seconds").innerHTML = "00";
-                    document.getElementById("minutes").innerHTML = "00";
-                    clearInterval(intervalCycle);
-                    finishSound.play();
-                    return;
-                    
-                }
-                else{
-                    clearInterval(intervalCycle);
-                    finishSound.play();
-                    count++;
-                    startTimer();
-                }
-                
-                    if(initialWait &&  initialWait > 0){
-                        if(count > 1 && count % 2 !== 0){
-                            roundsCount++;
-                            document.getElementById("rounds-container").innerHTML = roundsCount + " / " + totalRounds;
-                                
-                        }
-                    }
-                    else{
-                        if(count > 0 && count % 2 == 0){
-                            roundsCount++;
-                            document.getElementById("rounds-container").innerHTML = roundsCount + " / " + totalRounds;
-                        }
-                    }
-            }
-            else {
+        this.x = this.x - 1;
+        document.getElementById("seconds").innerHTML = this.x < 10 ? "0" + this.x : this.x;
+        document.getElementById("minutes").innerHTML = this.y < 10 ? "0" + this.y : this.y;
+    }
+    if(this.x == 0 && this.y == 0){
+        if(totalRounds && totalRounds > 0){
+            if(roundsCount == totalRounds){
+                document.getElementById("seconds").innerHTML = "00";
+                document.getElementById("minutes").innerHTML = "00";
                 clearInterval(intervalCycle);
-                count++; 
+                finishSound.play();
+                return;
+                
+            }
+            else{
+                clearInterval(intervalCycle);
+                finishSound.play();
+                count++;
                 startTimer();
             }
-
             
+                if(initialWait &&  initialWait > 0){
+                    if(count > 1 && count % 2 !== 0){
+                        roundsCount++;
+                        document.getElementById("rounds-container").innerHTML = roundsCount + " / " + totalRounds;
+                            
+                    }
+                }
+                else{
+                    if(count > 0 && count % 2 == 0){
+                        roundsCount++;
+                        document.getElementById("rounds-container").innerHTML = roundsCount + " / " + totalRounds;
+                    }
+                }
+        }
+        else {
+            clearInterval(intervalCycle);
+            count++; 
+            startTimer();
         }
 
-
+        
     }
+
+
+}
 
 
 function pauseTimer(){
-    isPaused = true;
-    pseudoTimerVariables = {
-        x : timerVariables.x,
-        y : timerVariables.y
-    };
-    clearInterval(intervalCycle);
-    
-}
-
-function stopAlert(){
-    let stopAlertBox = document.createElement("DIV");
-    stopAlertBox.id = "stop-alert";
-    let stopAlertMessage = document.createElement("DIV");
-    stopAlertMessage.id = "stopAlert-message-container";
-    let stopAlertTextNode = document.createTextNode("Timer will be reset.");
-    stopAlertMessage.appendChild(stopAlertTextNode);
-    let linebreak = document.createElement("br");
-    stopAlertMessage.appendChild(linebreak);
-    let stopAlertTextNode2 = document.createTextNode("Are you sure you want to stop?");
-    stopAlertMessage.appendChild(stopAlertTextNode2);
-
-    let yesButton = document.createElement("button");
-    yesButton.className = "alert-buttons";
-    let buttonText = document.createTextNode("YES");
-    yesButton.appendChild(buttonText);
-    let noButton = document.createElement("BUTTON");
-    let buttonText2 = document.createTextNode("NO");
-    noButton.appendChild(buttonText2);
-    noButton.className = "alert-buttons";
-
-    
-    document.body.appendChild(stopAlertBox);
-    stopAlertBox.appendChild(stopAlertMessage);
-    stopAlertBox.appendChild(yesButton);
-    stopAlertBox.appendChild(noButton);
-    
-
-    yesButton.addEventListener("click", function(){stopFlag = true; stopTimer()});
-    noButton.addEventListener("click", function(){stopTimer()});
-
+isPaused = true;
+pseudoTimerVariables = {
+    x : timerVariables.x,
+    y : timerVariables.y
+};
+clearInterval(intervalCycle);
 
 }
-
-
-function stopTimer(){
-    let removeStopAlert =  document.getElementById("stop-alert");
-    document.body.removeChild(removeStopAlert);
- 
-    if(stopFlag){
-        
-        clearInterval(intervalCycle);
-        document.getElementById("seconds").innerHTML = "00";
-        document.getElementById("minutes").innerHTML = "00";
-        stopFlag = false;
-    }
-
-
-
-    
-}
-
-
-
-
-
 
 function settingThings(){
-    
-    //----------------------------CREATING ELEMENTS FOR THE TIMER:----------------------------//
-    
 
-    //----------------------------PARENT ELEMENT OF TIMER:------------------------------------//
+//----------------------------CREATING ELEMENTS FOR THE TIMER:----------------------------//
+
+
+//----------------------------PARENT ELEMENT OF TIMER:------------------------------------//
 
     let parent = document.createElement("DIV");
     parent.className = "timer-container";
@@ -246,27 +189,27 @@ function settingThings(){
     document.body.appendChild(parent);
 
 
-    //----------------------------PARENT ELEMENT OF BUTTONS:-----------------------------------//
+//----------------------------PARENT ELEMENT OF BUTTONS:-----------------------------------//
 
     let buttonParent = document.createElement("DIV");
     buttonParent.className = "buttons-container";
     parent.appendChild(buttonParent);
 
 
-    //----------------------------CHILD ELEMENTS OF TIMER BELOW-------------------------------//
-    
+//----------------------------CHILD ELEMENTS OF TIMER BELOW-------------------------------//
+
     let roundsNode = document.createElement("DIV");
     roundsNode.id = "rounds-container";
     let roundsChildNode;
     if(totalRounds && totalRounds > 0){
-         roundsChildNode = document.createTextNode(roundsCount + "/" + totalRounds);
+        roundsChildNode = document.createTextNode(roundsCount + "/" + totalRounds);
     }
     else{
         roundsChildNode = document.createTextNode("INFINITE ROUNDS");
     }
-    
+
     roundsNode.appendChild(roundsChildNode);
-    
+
     let headingNode = document.createElement("DIV");
     headingNode.id = "heading-container";
     let headingChildNode;
@@ -277,8 +220,8 @@ function settingThings(){
         headingChildNode = document.createTextNode("WORKOUT");
     }
     headingNode.appendChild(headingChildNode);
-    
-    
+
+
 
 
     let minuteNode = document.createElement("SPAN");
@@ -292,64 +235,64 @@ function settingThings(){
         minuteChildNode = workMinutes < 10 ? document.createTextNode("0" + workMinutes) : document.createTextNode(workMinutes);
     }
     minuteNode.appendChild(minuteChildNode);
-    
+
 
     let colon = document.createElement("SPAN");
     colon.className = "colon";
     let colonText = document.createTextNode(":");
     colon.appendChild(colonText);
 
-       
+    
     let secondNode = document.createElement("SPAN");
     secondNode.className = "timer";
     secondNode.id = "seconds";
     let secondChildNode;
     if(initialWait && initialWait > 0){
-         secondChildNode = initialWait < 10 ? document.createTextNode("0" + initialWait) : document.createTextNode(initialWait);
+        secondChildNode = initialWait < 10 ? document.createTextNode("0" + initialWait) : document.createTextNode(initialWait);
     }
     else{
-         secondChildNode = workSeconds < 10 ? document.createTextNode("0" + workSeconds) : document.createTextNode(workSeconds);
+        secondChildNode = workSeconds < 10 ? document.createTextNode("0" + workSeconds) : document.createTextNode(workSeconds);
     }
-    
+
     secondNode.appendChild(secondChildNode);
 
-    //---------------------------------BUTTON ELEMENTS BELOW:------------------------------//
+//---------------------------------BUTTON ELEMENTS BELOW:------------------------------//
 
 
-    //----------------------------BACK BUTTON----------------------------------------------//
+//----------------------------BACK BUTTON----------------------------------------------//
     var backButton = document.createElement("DIV");
     backButton.id = "back";
     document.body.appendChild(backButton);
 
 
-    //-------------------------------PLAY BUTTON------------------------------------------//
+//-------------------------------PLAY BUTTON------------------------------------------//
 
     var playButton = document.createElement("DIV");
     playButton.id = "play";
-    
-    //-------------------------------PAUSE BUTTON-----------------------------------------//
+
+//-------------------------------PAUSE BUTTON-----------------------------------------//
 
     var pauseButton = document.createElement("DIV");
     pauseButton.id = "pause";
 
-    //-------------------------------STOP BUTTON-----------------------------------------//
+//-------------------------------STOP BUTTON-----------------------------------------//
 
     var stopButton = document.createElement("DIV");
     stopButton.id = "stop";
 
 
 
-    //----------------------------- EVENTS OF BUTTONS------------------------------------//
+//----------------------------- EVENTS OF BUTTONS------------------------------------//
 
     playButton.addEventListener("click", function(){startTimer(); startSound.play()});
     pauseButton.addEventListener("click", pauseTimer);
-    stopButton.addEventListener("click", stopAlert);
-    backButton.addEventListener("click", goBackAlert);
+    stopButton.addEventListener("click", function(){alertBox(); stopFlag = true;});
+    backButton.addEventListener("click", alertBox);
 
-    // -------------------------- ENDING OF CHILD ELEMENTS-------------------------//
-    
-    
-    //-------------------APPENDING CHILD ELEMENTS TO PARENT ELEMENTS:--------------------//
+// -------------------------- ENDING OF CHILD ELEMENTS-------------------------//
+
+
+//-------------------APPENDING CHILD ELEMENTS TO PARENT ELEMENTS:--------------------//
     parent.insertBefore(roundsNode, buttonParent);
     parent.insertBefore(headingNode, buttonParent);
     parent.insertBefore(minuteNode, buttonParent);
@@ -363,23 +306,30 @@ function settingThings(){
 }
 
 function clearThings(){
-     let formContainer = document.getElementById("main-container");
-     //document.body.removeChild(formContainer);
+    let formContainer = document.getElementById("main-container");
     formContainer.style.display = "none";
 }
 
 
-function goBackAlert(){
-    
+
+function alertBox(){
+
     let alertBox = document.createElement("DIV");
-    alertBox.id = "goback-alert";
+    alertBox.id = "alert-box";
     let alertMessage = document.createElement("DIV");
-    alertMessage.id = "goback-message-container";
+    alertMessage.id = "alert-message-container";
     let alertTextNode = document.createTextNode("Timer will be reset.");
     alertMessage.appendChild(alertTextNode);
     let linebreak = document.createElement("br");
     alertMessage.appendChild(linebreak);
-    let alertTextNode2 = document.createTextNode("Are you sure you want to go back?");
+    let alertTextNode2;
+    if(stopFlag){
+        alertTextNode2 = document.createTextNode("Are you sure you want to quit?");
+        
+    }
+    else {
+        alertTextNode2 = document.createTextNode("Are you sure you want to go back?");
+    }
     alertMessage.appendChild(alertTextNode2);
 
     let yesButton = document.createElement("button");
@@ -390,59 +340,52 @@ function goBackAlert(){
     let buttonText2 = document.createTextNode("NO");
     noButton.appendChild(buttonText2);
     noButton.className = "alert-buttons";
-    
-    
 
-    
     document.body.appendChild(alertBox);
     alertBox.appendChild(alertMessage);
     alertBox.appendChild(yesButton);
     alertBox.appendChild(noButton);
-    
 
-    yesButton.addEventListener("click", function(){goBackFlag = true; goBack()});
+    
+    yesButton.addEventListener("click", function(){goBackFlag = true; stopFlag = false; goBack()});
     noButton.addEventListener("click", function(){goBack()});
-    
-    
+
 }
 
 
 function goBack(){
 
-    let removeAlert = document.getElementById("goback-alert");
+    let removeAlert = document.getElementById("alert-box");
     document.body.removeChild(removeAlert);
-    tickSound.stop();
-    
-    
-    if(goBackFlag){
-            clearInterval(intervalCycle);
-            let removeButton = document.getElementById("back");
-            document.body.removeChild(removeButton);
-            
-       
-           let formContainer = document.getElementById("main-container");
-           formContainer.style.display = "block";
-           // document.body.appendChild(formContainer);
-       
-            let timerContainer = document.getElementById("timer-id");
-            document.body.removeChild(timerContainer);
-            roundsCount = 1;
+
+
+
+if(goBackFlag){
+        clearInterval(intervalCycle);
+        let removeButton = document.getElementById("back");
+        document.body.removeChild(removeButton);
         
-           goBackFlag = false;
+   
+       let formContainer = document.getElementById("main-container");
+       formContainer.style.display = "block";
+       
+   
+        let timerContainer = document.getElementById("timer-id");
+        document.body.removeChild(timerContainer);
+        roundsCount = 1;
+    
+       goBackFlag = false;
 
-           workSeconds = 0;
-           workMinutes = 0;
-           restMinutes = 0;
-           restSeconds = 0;
-           initialWait = 0;
-           totalRounds = 0;
-           count = 0;
-    }
-
+       workSeconds = 0;
+       workMinutes = 0;
+       restMinutes = 0;
+       restSeconds = 0;
+       initialWait = 0;
+       totalRounds = 0;
+       count = 0;
 }
 
-
-
+}
 
 //-----------------------------------SOUND OBJECT CONSTRUCTOR---------------------------------------//
 
