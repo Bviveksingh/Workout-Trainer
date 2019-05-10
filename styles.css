@@ -1,5 +1,3 @@
-
-
 /*--------------------------------------------------------------*/
 /*--------------------COMMON STYLES-------------------------------------------*/
 
@@ -166,7 +164,7 @@
 
 /*-------------------------ALERT BOX---------------------------------------------------*/
 
-#goback-alert{
+#alert-box{
     position: absolute;
     left: 50%;
     top: 50%;
@@ -178,7 +176,7 @@
 
 }
 
-#goback-message-container{  
+#alert-message-container{  
     text-align: center;
     font-size: 1.5em;
     font-weight: bolder;
@@ -193,24 +191,6 @@
     cursor: pointer;
 }
 
-#stop-alert{
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%,-50%);
-    z-index: 99;
-    width: 500px;
-    height: 200px;
-    border: 1px solid yellow;
-
-}
-
-#stopAlert-message-container{  
-    text-align: center;
-    font-size: 1.5em;
-    font-weight: bolder;
-    letter-spacing: 2px;
-}
 
 
 

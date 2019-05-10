@@ -12,6 +12,7 @@
     goBackFlag = false,
     stopFlag = false,
     totalRounds,
+    stopButton,
     intervalCycle;
     startSound = new Sound("Resources/Sounds/start.mp3");
     finishSound = new Sound("Resources/Sounds/finish.mp3");               
@@ -94,7 +95,7 @@ else{
         x : pseudoTimerVariables.x,
         y : pseudoTimerVariables.y
     }
-    isPaused = false;
+    //isPaused = false;
 }
 
 
@@ -173,7 +174,7 @@ function pauseTimer(){
         y : timerVariables.y
     };
     clearInterval(intervalCycle);
-
+    document.getElementById("pause").removeEventListener("click", pauseTimer);
 }
 
 function settingThings(){
@@ -262,7 +263,7 @@ function settingThings(){
 //----------------------------BACK BUTTON----------------------------------------------//
     var backButton = document.createElement("DIV");
     backButton.id = "back";
-    document.body.appendChild(backButton);
+    
 
 
 //-------------------------------PLAY BUTTON------------------------------------------//
@@ -277,17 +278,32 @@ function settingThings(){
 
 //-------------------------------STOP BUTTON-----------------------------------------//
 
-    var stopButton = document.createElement("DIV");
+    stopButton = document.createElement("DIV");
     stopButton.id = "stop";
 
 
 
 //----------------------------- EVENTS OF BUTTONS------------------------------------//
 
-    playButton.addEventListener("click", function(){startTimer(); startSound.play()});
+    playButton.addEventListener("click", function startTheTimer(){
+        startTimer(); 
+        startSound.play();
+        if(!isPaused){
+            playButton.removeEventListener("click", startTheTimer);
+        }
+        
+    });
     pauseButton.addEventListener("click", pauseTimer);
-    stopButton.addEventListener("click", function(){stopFlag = true;alertBox(); });
-    backButton.addEventListener("click", alertBox);
+    backButton.addEventListener("click", function callAlert(){
+        alertBox(); 
+        backButton.removeEventListener("click", callAlert);
+    });
+    stopButton.addEventListener("click", function callAlert2(){
+        stopFlag = true;
+        alertBox();
+        stopButton.removeEventListener("click", callAlert2);
+    });
+    
 
 // -------------------------- ENDING OF CHILD ELEMENTS-------------------------//
 
@@ -302,6 +318,7 @@ function settingThings(){
     buttonParent.appendChild(playButton);
     buttonParent.appendChild(pauseButton);
     buttonParent.appendChild(stopButton);
+    document.body.appendChild(backButton);
 
 }
 
@@ -313,7 +330,7 @@ function clearThings(){
 
 
 function alertBox(){
-
+    console.log("Yo bro!");
     let alertBox = document.createElement("DIV");
     alertBox.id = "alert-box";
     let alertMessage = document.createElement("DIV");
@@ -330,6 +347,8 @@ function alertBox(){
     else {
         alertTextNode2 = document.createTextNode("Are you sure you want to go back?");
     }
+    alertTextNode2 = document.createTextNode("Are you sure you want to quit?");
+
     alertMessage.appendChild(alertTextNode2);
 
     let yesButton = document.createElement("button");
@@ -346,9 +365,10 @@ function alertBox(){
     alertBox.appendChild(yesButton);
     alertBox.appendChild(noButton);
 
-    
+
     yesButton.addEventListener("click", function(){goBackFlag = true; stopFlag = false; goBack();});
     noButton.addEventListener("click", function(){stopFlag = false;goBack();});
+    
 
 }
 
